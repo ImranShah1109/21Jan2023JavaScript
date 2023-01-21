@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h3>Login</h3>
+    <form method="post">
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="loginEmail"><br><br>
+        <label for="pass">Password :</label>
+        <input type="password" name="pass" id="pass"><br><br>
+        <input type="submit" value="Login">
+    </form>
+    <script>
+        let user = JSON.parse(localStorage.getItem('user'));
+        // console.log(user);
+        const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        let form = document.querySelector('form');
+        form.addEventListener('submit', login);
+
+        let email = document.getElementById('loginEmail');
+        let password = document.getElementById('pass');
+
+        function login(e){
+            e.preventDefault();
+            let mail = email.value;
+            let pass = password.value;
+            // console.log(mail, pass);
+
+            let flag = false;
+
+            for(u of user){
+                if(u.email == mail){
+                    flag = true;
+                    if(u.password == pass){
+                        window.alert("Login Successfull!!");
+                        let token = generateToken(10);
+                        u.token = token;
+                        console.log(u);
+                        window.location.href = "./landing.html";
+                    }
+                    else{
+                        window.alert("Invalid Password");
+                    }
+                }
+            }
+
+            if(!flag){
+                window.alert("Invalid email address");
+            }
+        }
+
+        function generateToken(length) {
+            let result = ' ';
+            const charactersLength = characters.length;
+            for ( let i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+
+            return result;
+        }
+    </script>
+</body>
+</html>
